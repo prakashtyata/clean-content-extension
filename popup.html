@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clean Content Editor</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="main-header">
+        <div class="header-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+        <div class="header-top">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18.5 3L17 8L19 10L24 8.5L18.5 3Z" fill="rgba(255,255,255,0.9)"/>
+                        <path d="M26 6L24.5 9L26.5 11L29 9.5L26 6Z" fill="rgba(255,255,255,0.6)"/>
+                        <path d="M14 7C14 7 8 18 7 20C6 22 7 24 9 25C11 26 13 25 14 23C15 21 19 9 19 9" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <path d="M7 20C5 22 3 26 5 28C7 30 11 28 13 26" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <path d="M5 28L3 29" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="27" cy="4" r="1.5" fill="rgba(255,255,255,0.5)"/>
+                    </svg>
+                </div>
+                <h1>Clean Content</h1>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" id="settingsBtn" title="Settings">⚙️</button>
+                <button class="header-btn" id="darkModeBtn" title="Toggle Dark Mode">🌙</button>
+            </div>
+        </div>
+        <p class="subtitle">Paste formatted content → Get clean HTML</p>
+    </header>
+
+    <!-- ===== SETTINGS PANEL ===== -->
+    <div class="extension-container">
+        <div class="settings-panel" id="settingsPanel">
+            <div class="settings-title">⚙️ Settings</div>
+            <div class="setting-row">
+                <span class="setting-label">Auto-copy cleaned HTML</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="autoCopyToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Preserve images</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="preserveImagesToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Retain image links</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="retainImageLinksToggle">
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Strip empty paragraphs</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="stripEmptyToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Preserve headings</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="preserveHeadingsToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="setting-row">
+                <span class="setting-label">Smart quotes → straight quotes</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="smartQuotesToggle" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+            <div class="settings-divider" style="height: 1px; background: var(--border); margin: 10px 0;"></div>
+            <div class="credits-section" style="font-size: 11px; color: var(--text-muted); padding-top: 5px;">
+                <div style="margin-bottom: 4px;">Created by <strong>SoftART</strong></div>
+                <div><a href="https://softart.com.np" target="_blank" style="color: var(--primary); text-decoration: none;">softart.com.np</a></div>
+                <div style="margin-top: 8px; margin-bottom: 4px;">Developer: <strong>Prakash Tyata</strong></div>
+                <div><a href="https://prakashtyata.com.np" target="_blank" style="color: var(--primary); text-decoration: none;">prakashtyata.com.np</a></div>
+            </div>
+        </div>
+
+        <!-- ===== TOAST ===== -->
+        <div class="alert-toast" id="copyAlert">
+            <span class="alert-icon">✓</span>
+            <span class="alert-text">Copied to clipboard!</span>
+        </div>
+
+        <!-- ===== FORMAT INDICATOR ===== -->
+        <div class="format-indicator" id="formatIndicator"></div>
+
+        <!-- ===== EDITOR ===== -->
+        <main class="editor-main">
+            <div class="panel input-panel">
+                <div class="panel-header">
+                    <span class="panel-title">
+                        <span class="panel-title-icon">📝</span> Editor
+                    </span>
+                    <div class="header-actions-panel">
+                        <button class="btn-icon" id="undoBtn" title="Undo (Ctrl+Z)">↩️</button>
+                        <button class="btn-icon" id="redoBtn" title="Redo (Ctrl+Y)">↪️</button>
+                        <button class="btn-icon" id="clearBtn" title="Clear Editor (Ctrl+Shift+X)">🗑️</button>
+                    </div>
+                </div>
+                <div class="toolbar">
+                    <button class="tool-btn" data-command="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+                    <button class="tool-btn" data-command="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+                    <button class="tool-btn" data-command="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+                    <button class="tool-btn" data-command="strikethrough" title="Strikethrough"><s>S</s></button>
+                    <span class="toolbar-divider"></span>
+                    <button class="tool-btn" data-block="h1" title="Heading 1">H1</button>
+                    <button class="tool-btn" data-block="h2" title="Heading 2">H2</button>
+                    <button class="tool-btn" data-block="h3" title="Heading 3">H3</button>
+                    <button class="tool-btn" data-block="blockquote" title="Blockquote">❝</button>
+                    <button class="tool-btn" data-block="p" title="Normal paragraph">¶</button>
+                    <span class="toolbar-divider"></span>
+                    <button class="tool-btn" data-command="insertUnorderedList" title="Bullet List">• List</button>
+                    <button class="tool-btn" data-command="insertOrderedList" title="Numbered List">1. List</button>
+                    <span class="toolbar-divider"></span>
+                    <button class="tool-btn btn-link" id="addLinkBtn" title="Add Link">🔗 Link</button>
+                    <button class="tool-btn btn-danger" id="removeLinkBtn" title="Remove All Links">🚫 Unlink</button>
+                </div>
+                <div class="editor-area" contenteditable="true" id="editor" placeholder="Paste your content here..."></div>
+                <div class="stats-bar" id="statsBar">
+                    <div class="stat">
+                        Words: <span class="stat-value" id="wordCount">0</span>
+                    </div>
+                    <div class="stat">
+                        Characters: <span class="stat-value" id="charCount">0</span>
+                    </div>
+                    <div class="stat">
+                        Links: <span class="stat-value" id="linkCount">0</span>
+                    </div>
+                    <div class="stat">
+                        Paragraphs: <span class="stat-value" id="paraCount">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel output-panel">
+                <div class="panel-header">
+                    <span class="panel-title">
+                        <span class="panel-title-icon">✨</span> Clean HTML
+                    </span>
+                    <div class="output-header-row">
+                        <button class="preview-toggle" id="previewToggle" title="Toggle HTML Preview">👁 Preview</button>
+                        <button class="btn-primary btn-sm" id="copyBtn">
+                            📋 Copy <span class="shortcut-hint">Ctrl+Shift+C</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="preview-area" id="previewArea"></div>
+                <div class="code-output-area">
+                    <pre id="output"></pre>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="extension-footer">
+        <span>Clean Content Editor v1.2.0</span>
+        <span class="footer-dot"></span>
+        <span>by <a href="https://softart.com.np" target="_blank">SoftART</a></span>
+        <span class="footer-dot"></span>
+        <span><a href="https://prakashtyata.com.np" target="_blank">Prakash Tyata</a></span>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

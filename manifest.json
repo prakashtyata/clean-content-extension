@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "Clean Content Editor",
+  "short_name": "CleanContent",
+  "version": "1.2.0",
+  "description": "Clean and strip HTML formatting from Google Docs, Word, and rich text. Preserve links and get pure semantic HTML instantly.",
+  "author": "SoftART",
+  "homepage_url": "https://softart.com.np",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": ["storage"],
+  "offline_enabled": true
+}
