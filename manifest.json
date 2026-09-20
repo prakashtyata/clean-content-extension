@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Clean Content Editor",
   "short_name": "CleanContent",
-  "version": "1.2.0",
+  "version": "1.5.1",
   "description": "Clean and strip HTML formatting from Google Docs, Word, and rich text. Preserve links and get pure semantic HTML instantly.",
   "author": "SoftART",
   "homepage_url": "https://softart.com.np",
